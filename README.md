@@ -19,26 +19,48 @@ after the appointment, so there is no online checkout.
 
 ## Design direction
 
-Palette direction is **Foil** — a brushed aluminum ground with a sage accent
-and a copper secondary. The accents are a colour-theory pair taken from the
-craft: green cancels red, and copper is the warmth it cancels. Type is
-**Boska** (display) over **Switzer** (body), both from Fontshare.
+Register taken from [verostudio.com](https://www.verostudio.com/): a warm cream
+ground, a high-contrast Didone for headlines, and a neo-grotesque for the small
+amount of UI text. Type is **Bodoni Moda** over **Switzer**.
 
-The metal is built rather than painted, and these four pieces are the visual
-vocabulary to extend rather than replace with flat fills:
+| Token        | Value     | Role              |
+| ------------ | --------- | ----------------- |
+| `cream`      | `#f3f0ed` | ground            |
+| `cream-deep` | `#eae5e0` | alternating scenes |
+| `ink`        | `#181615` | type              |
 
-- `.metal` / `.metal-reverse` / `.metal-dark` — fine directional striations
-  under a specular sheen, with the sheen angle flipped on alternating panels so
-  the page reads as a stack of brushed sheets rather than one flat field
-- `.engrave` — a dark scribe with a lit edge beneath it, in place of flat 1px
-  hairlines
-- `.lettering` / `.lettering-invert` — a narrow dark-on-dark gradient on
-  display type so it reads as a material
+**There is no accent colour.** Colour comes from photography and nowhere else —
+no tinted panels, no coloured buttons. Until real photographs exist the
+`.backdrop-*` classes stand in as art-directed studio grounds (a lit seamless
+ground with vignette and grain); they are placeholders and come out when the
+real imagery lands.
 
-Every palette and type value lives in one `:root` block at the top of
-`app/globals.css`. Swapping the whole site to the alternative cream direction
-means editing that block and the font `<link>` in `app/layout.tsx` — no
-component changes.
+**One typographic device carries the personality:** nouns in uppercase serif,
+the words joining them in lowercase italic.
+
+```tsx
+<Headline text="COLOUR {that} STILL LOOKS RIGHT {at} WEEK SIX" />
+```
+
+Braced runs render lowercase italic, everything else uppercase. Resist adding a
+second device.
+
+**Scene vocabulary**, alternating so the page has a rhythm rather than a stack:
+
+- `SceneStatement` — centred cream, one statement, optionally a short paragraph
+  and one link. The restraint here is what lets the photographic scenes land.
+- `SceneFullBleed` — edge-to-edge photograph with the statement anchored low
+  over a bottom-weighted scrim, so white type keeps its contrast whatever the
+  real photograph turns out to be.
+- `Preloader` — waits on `document.fonts.ready` rather than a timer, so the
+  serif never swaps mid-reveal.
+- `MaskLine` — line-level reveals. Deliberately not per-character: at this size
+  in a Didone, per-character staggering reads as a gimmick.
+
+Deliberately absent, because they are what made earlier passes read as
+templated: hairline rules used as structure, tracked uppercase eyebrows,
+decorative section indexes, standfirst panels, flat colour blocks, and uniform
+section-after-section stacking. Words on screen are kept to a minimum.
 
 ## Getting started
 

@@ -1,297 +1,190 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   THEME — single source of truth for palette and type.
+   THEME — single source of truth.
 
-   Direction: "Foil" — brushed aluminum ground, sage accent, copper secondary.
-   The accents are a colour-theory pair from the craft itself: green cancels
-   red, copper is the warmth it cancels. Nothing here is decorative.
+   Register: warm cream ground, near-black ink, high-contrast serif for
+   headlines and a neo-grotesque for the little UI text there is.
 
-   The metal is built, not painted: a cool neutral ground, fine directional
-   striations, a specular sheen that falls differently on each panel, and
-   grooved rules instead of flat hairlines.
+   The governing rule is that COLOUR COMES FROM THE PHOTOGRAPHY, never from
+   painted UI. There are no accent-coloured buttons, no tinted panels and no
+   decorative fills anywhere in this file. Until real photography exists, the
+   `.backdrop-*` classes stand in as art-directed studio grounds.
 
-   To try the earlier cream direction, replace the values in this block with
-   the `cream:` values noted beside each and swap --face-display to Fraunces
-   (plus its <link> in app/layout.tsx). Nothing else needs edits.
+   The second rule is restraint in words: no eyebrows, no tracked micro-labels,
+   no section indexes, no standfirst panels. A headline and a photograph.
    ========================================================================== */
 
 :root {
-  /* --- Ground and surfaces --- */
-  --foil: #c9cdce; /* cream: #f4f1ea */
-  --foil-shift: #bdc2c4; /* cream: #ece7dd */
-  --paper: #e9ebeb; /* cream: #faf8f3 */
-  --panel: #adb3b5; /* cream: #e7e1d5 */
-  --eclipse: #131618; /* gunmetal band */
-  --sheen: #f5f7f7; /* specular highlight */
+  --cream: #f3f0ed;
+  --cream-deep: #eae5e0;
+  --ink: #181615;
+  --ink-body: color-mix(in srgb, var(--ink) 72%, transparent);
+  --ink-muted: color-mix(in srgb, var(--ink) 50%, transparent);
+  --ink-faint: color-mix(in srgb, var(--ink) 30%, transparent);
+  --hairline: color-mix(in srgb, var(--ink) 18%, transparent);
 
-  /* --- Ink --- */
-  --ink: #15181a; /* cream: #14120f */
+  --face-display: var(--font-bodoni), "Didot", Georgia, serif;
+  --face-ui: "Switzer", "Helvetica Neue", Arial, sans-serif;
 
-  /* --- Accents: green cancels red, copper is the red it cancels --- */
-  --sage: #9fb08c; /* dark bands, large fills, display only on foil */
-  --sage-deep: #46543d; /* text-safe on foil: 5.1:1 */
-  --sage-dark: #333e2c; /* hover / pressed */
-  --copper: #c77b4a; /* dark bands + display only */
-  --copper-ink: #8a4a22; /* text-safe on foil: 4.7:1 */
-
-  /* --- Derived ink alphas (auto-follow --ink on a palette swap) --- */
-  --ink-body: color-mix(in srgb, var(--ink) 76%, transparent);
-  --ink-muted: color-mix(in srgb, var(--ink) 58%, transparent);
-  --ink-faint: color-mix(in srgb, var(--ink) 42%, transparent);
-  --rule: color-mix(in srgb, var(--ink) 18%, transparent);
-  --rule-soft: color-mix(in srgb, var(--ink) 11%, transparent);
-
-  /* --- Derived paper alphas, for use on --eclipse --- */
-  --paper-body: color-mix(in srgb, var(--paper) 74%, transparent);
-  --paper-muted: color-mix(in srgb, var(--paper) 54%, transparent);
-  --rule-invert: color-mix(in srgb, var(--paper) 22%, transparent);
-
-  /* --- Typefaces --- */
-  --face-display: "Boska", Georgia, serif; /* cream: "Fraunces", Georgia, serif */
-  --face-body: "Switzer", "Helvetica Neue", sans-serif;
-
-  /* --- Motion --- */
-  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-editorial: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-drape: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  /* Colors */
-  --color-foil: var(--foil);
-  --color-foil-shift: var(--foil-shift);
-  --color-paper: var(--paper);
-  --color-panel: var(--panel);
-  --color-eclipse: var(--eclipse);
-  --color-sheen: var(--sheen);
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
   --color-ink: var(--ink);
   --color-ink-body: var(--ink-body);
   --color-ink-muted: var(--ink-muted);
   --color-ink-faint: var(--ink-faint);
-  --color-rule: var(--rule);
-  --color-rule-soft: var(--rule-soft);
-  --color-paper-body: var(--paper-body);
-  --color-paper-muted: var(--paper-muted);
-  --color-rule-invert: var(--rule-invert);
-  --color-sage: var(--sage);
-  --color-sage-deep: var(--sage-deep);
-  --color-sage-dark: var(--sage-dark);
-  --color-copper: var(--copper);
-  --color-copper-ink: var(--copper-ink);
+  --color-hairline: var(--hairline);
 
-  /* Typefaces */
   --font-display: var(--face-display);
-  --font-body: var(--face-body);
+  --font-ui: var(--face-ui);
 
-  /* Type scale — display sizes sit intentionally far apart, so the jump from
-     a label to the brand name is a full order of magnitude. */
-  --text-micro: 10px;
-  --text-label: 11px;
-  --text-caption: 12px;
-  --text-body: clamp(14px, 1.05vw, 16px);
-  --text-body-lg: clamp(15px, 1.2vw, 18px);
-  --text-d-sm: clamp(22px, 2.6vw, 38px);
-  --text-d-md: clamp(28px, 3.6vw, 52px);
-  --text-d-lg: clamp(34px, 5vw, 76px);
-  --text-d-xl: clamp(40px, 7vw, 104px);
-  --text-d-xxl: clamp(60px, 14vw, 232px);
+  --text-statement: clamp(32px, 6.2vw, 104px);
+  --text-d-lg: clamp(27px, 4.6vw, 74px);
+  --text-d-md: clamp(21px, 2.8vw, 40px);
+  --text-d-sm: clamp(17px, 1.9vw, 26px);
+  --text-read: clamp(14px, 1.05vw, 17px);
+  --text-ui: 12px;
+  --text-ui-sm: 10.5px;
 
-  /* Tracking — micro labels open right up, display type closes hard */
-  --tracking-micro: 0.28em;
-  --tracking-label: 0.22em;
-  --tracking-display: -0.04em;
-  --tracking-display-tight: -0.055em;
+  --tracking-display: 0.005em;
+  --tracking-ui: 0.14em;
 
-  /* Spacing */
-  --spacing-gutter: clamp(16px, 3vw, 44px);
-  --spacing-section: clamp(60px, 11vh, 130px);
-  --spacing-col: clamp(10px, 1.6vw, 22px);
-
-  /* Easing */
-  --ease-editorial: var(--ease-editorial);
-  --ease-out-quint: var(--ease-out-quint);
+  --spacing-gutter: clamp(18px, 3.4vw, 56px);
+  --spacing-scene: clamp(80px, 15vh, 190px);
 }
-
-/* ==========================================================================
-   BASE
-   ========================================================================== */
 
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Lenis owns scrolling; native smooth would fight it. */
     scroll-behavior: auto;
+    background-color: var(--cream);
   }
 
   body {
-    background-color: var(--foil);
+    background-color: var(--cream);
     color: var(--ink);
-    font-family: var(--face-body);
-    font-weight: 300;
+    font-family: var(--face-ui);
     overflow-x: clip;
   }
 
   ::selection {
-    background-color: var(--sage-deep);
-    color: var(--paper);
+    background-color: var(--ink);
+    color: var(--cream);
   }
 
   :focus-visible {
-    outline: 2px solid var(--sage-deep);
-    outline-offset: 3px;
+    outline: 1.5px solid var(--ink);
+    outline-offset: 4px;
   }
 }
-
-/* ==========================================================================
-   METAL — the site is a stack of brushed panels, each catching light at a
-   slightly different angle. Striations are a tiled gradient and the sheen is
-   a single linear gradient, so a panel costs one paint and nothing per frame.
-   ========================================================================== */
 
 @layer components {
-  .metal {
-    --brush: color-mix(in srgb, var(--ink) 4%, transparent);
-    --gloss: color-mix(in srgb, var(--sheen) 60%, transparent);
-    background-color: var(--foil);
-    background-image:
-      repeating-linear-gradient(
-        90deg,
-        var(--brush) 0 1px,
-        transparent 1px 5px
-      ),
-      linear-gradient(
-        104deg,
+  /* --- Art-directed studio grounds ---------------------------------------
+     Stand-ins for photography: a lit backdrop falling off to a darker edge,
+     the way a seamless paper roll reads under a single soft source. Real
+     photographs drop into the same wells and these classes come out. */
+
+  .backdrop {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* Vignette and a suggestion of a floor, so the ground has depth. */
+  .backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        88% 62% at 50% 42%,
         transparent 0%,
-        var(--gloss) 16%,
-        transparent 38%,
-        transparent 72%,
-        color-mix(in srgb, var(--sheen) 34%, transparent) 92%,
-        transparent 100%
-      );
-  }
-
-  /* Same sheet, light arriving from the other side. Alternate down the page so
-     consecutive panels never look like one flat field. */
-  .metal-reverse {
-    --brush: color-mix(in srgb, var(--ink) 4%, transparent);
-    --gloss: color-mix(in srgb, var(--sheen) 46%, transparent);
-    background-color: var(--foil-shift);
-    background-image:
-      repeating-linear-gradient(
-        90deg,
-        var(--brush) 0 1px,
-        transparent 1px 5px
+        rgb(0 0 0 / 0.16) 72%,
+        rgb(0 0 0 / 0.4) 100%
       ),
       linear-gradient(
-        -98deg,
-        transparent 0%,
-        var(--gloss) 20%,
-        transparent 46%,
-        transparent 78%,
-        color-mix(in srgb, var(--sheen) 26%, transparent) 96%,
-        transparent 100%
+        to top,
+        rgb(0 0 0 / 0.28) 0%,
+        transparent 24%
       );
+    pointer-events: none;
   }
 
-  .metal-dark {
-    background-color: var(--eclipse);
-    background-image:
-      repeating-linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--paper) 3%, transparent) 0 1px,
-        transparent 1px 5px
-      ),
-      linear-gradient(
-        104deg,
-        transparent 0%,
-        color-mix(in srgb, var(--paper) 9%, transparent) 18%,
-        transparent 44%,
-        transparent 80%,
-        color-mix(in srgb, var(--paper) 5%, transparent) 96%,
-        transparent 100%
-      );
+  .backdrop-amber {
+    background: radial-gradient(
+      120% 92% at 50% 36%,
+      #f2ab63 0%,
+      #dc7a33 36%,
+      #9c4718 76%,
+      #5e2810 100%
+    );
   }
 
-  /* Grooved rule: a dark scribe with a lit edge under it, the way a machined
-     line catches light. Replaces flat 1px hairlines throughout. */
-  .engrave {
-    border-top: 1px solid var(--rule);
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--sheen) 72%, transparent);
+  .backdrop-rose {
+    background: radial-gradient(
+      120% 92% at 50% 38%,
+      #ecc0b1 0%,
+      #cb8271 38%,
+      #8c4132 78%,
+      #55231b 100%
+    );
   }
 
-  .engrave-invert {
-    border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 60%, transparent);
+  .backdrop-olive {
+    background: radial-gradient(
+      120% 92% at 50% 38%,
+      #d3cea4 0%,
+      #979254 40%,
+      #4f4c22 80%,
+      #2c2a12 100%
+    );
   }
 
-  /* Polished lettering: a narrow dark-on-dark gradient so display type reads
-     as a material rather than a flat fill. Lightest stop still holds 6.6:1. */
-  .lettering {
-    color: var(--ink);
+  .backdrop-slate {
+    background: radial-gradient(
+      120% 92% at 50% 38%,
+      #c3ccd3 0%,
+      #77878f 40%,
+      #39454c 80%,
+      #1f272c 100%
+    );
   }
 
-  @supports (background-clip: text) or (-webkit-background-clip: text) {
-    .lettering {
-      background-image: linear-gradient(
-        176deg,
-        #3c4245 0%,
-        var(--ink) 46%,
-        #2b3033 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .lettering-invert {
-      background-image: linear-gradient(
-        176deg,
-        #ffffff 0%,
-        var(--paper) 52%,
-        #b9bfc1 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+  .backdrop-sand {
+    background: radial-gradient(
+      120% 92% at 50% 38%,
+      #efdcbc 0%,
+      #cdaa78 40%,
+      #856334 80%,
+      #4c3a1e 100%
+    );
   }
 
-  /* Placeholder media wells. The hatch marks an asset as not-yet-real, so
-     unfinished tiles read as deliberate rather than broken. */
-  .well {
-    background-color: var(--panel);
-    background-image:
-      repeating-linear-gradient(
-        122deg,
-        color-mix(in srgb, var(--ink) 7%, transparent) 0 9px,
-        transparent 9px 26px
-      ),
-      linear-gradient(
-        104deg,
-        color-mix(in srgb, var(--sheen) 30%, transparent) 0%,
-        transparent 40%
-      );
+  /* Film grain. One static paint; keeps the stand-in grounds from looking
+     like flat CSS gradients. */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    z-index: 2;
+    opacity: 0.34;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   }
 
-  .well-sage {
-    background-color: var(--panel);
-    background-image:
-      repeating-linear-gradient(
-        122deg,
-        color-mix(in srgb, var(--sage) 30%, transparent) 0 10px,
-        transparent 10px 22px
-      ),
-      linear-gradient(
-        104deg,
-        color-mix(in srgb, var(--sheen) 24%, transparent) 0%,
-        transparent 40%
-      );
+  /* The one line style in the design, used for the newsletter field only. */
+  .rule-under {
+    border-bottom: 1px solid var(--hairline);
   }
 }
 
 /* ==========================================================================
-   LENIS — required styles for the smooth-scroll container
+   LENIS
    ========================================================================== */
 
 html.lenis,
@@ -316,8 +209,7 @@ html.lenis body {
 }
 
 /* ==========================================================================
-   REDUCED MOTION — blanket floor. Components additionally branch on
-   useReducedMotion() to swap choreography for the finished composition.
+   REDUCED MOTION
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {

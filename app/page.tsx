@@ -1,62 +1,50 @@
 import { Hero } from "@/components/sections/Hero";
-import { SectionShell } from "@/components/sections/SectionShell";
+import { SceneStatement } from "@/components/sections/SceneStatement";
+import { SceneFullBleed } from "@/components/sections/SceneFullBleed";
 
 export default function Home() {
   return (
     <>
       <Hero />
 
-      <SectionShell
+      <SceneStatement
+        lines={["COLOUR {that} STILL", "LOOKS RIGHT {at}", "WEEK SIX"]}
+        body="Lived-in blonde and colour correction in Edmonton. One client in the chair at a time, which is the only way to work slowly enough to get it right."
+      />
+
+      <SceneFullBleed
+        id="work"
+        ground="sand"
+        lines={["BEFORE {and} AFTER,", "{in the} ROUND"]}
+        caption="Honey balayage · grown out four months"
+      />
+
+      <SceneStatement
         id="services"
-        index="01"
-        label="Services"
-        title="The"
-        accent="menu"
-        blurb="Starting rates. Length, density and colour history move the number — you get the real quote at consultation, before anything is mixed."
-        arriving="Phase 3 — cursor-following preview on desktop, thumbnail rows on mobile"
-        tone="shift"
+        tone="deep"
+        lines={["EVERY PRICE {here is a}", "STARTING POINT"]}
+        body="Length, density and whatever happened to your hair before you got here all move the number. You get the real figure at consultation, before anything is mixed."
+        action={{ href: "#booking", label: "See the menu" }}
       />
 
-      <SectionShell
-        id="portfolio"
-        index="02"
-        label="Work"
-        title="Selected"
-        accent="work"
-        blurb="Before and after, in the round. The gallery is the centrepiece interaction on this site rather than a grid of thumbnails."
-        arriving="Phase 4 — circular scroll morph: scatter, line, ring, then arc"
+      <SceneFullBleed
+        id="motion"
+        ground="olive"
+        lines={["HAIR {only reads}", "{when it} MOVES"]}
+        caption="Silk press · in motion"
       />
 
-      <SectionShell
-        id="clips"
-        index="03"
-        label="In motion"
-        title="Hair, actually"
-        accent="moving"
-        blurb="Short muted loops that only play while they are on screen. This band inverts to gunmetal so the footage carries the section."
-        arriving="Phase 5 — IntersectionObserver-gated video, cursor spotlight"
-        tone="eclipse"
-      />
-
-      <SectionShell
+      <SceneStatement
         id="about"
-        index="04"
-        label="About"
-        title="Nine years behind the"
-        accent="chair"
-        blurb="Most of them spent fixing colour someone else rushed. Slow work, in daylight, with a free consultation where every appointment starts."
-        arriving="Phase 5 — sticky portrait with the text panel scrolling over it"
-        tone="shift"
+        lines={["NINE YEARS, {most of}", "{them spent undoing a}", "RUSH JOB"]}
+        body="I work slowly and in daylight, and I would rather talk you out of a look than send you home with something that gives up by week three. Consultation is free and every appointment starts with one."
       />
 
-      <SectionShell
+      <SceneFullBleed
         id="booking"
-        index="05"
-        label="Booking"
-        title="Request"
-        accent="a chair"
-        blurb="Pick a service and a time and it is confirmed on the spot. Nothing is charged here — payment happens in the salon, after."
-        arriving="Phase 6 — live availability from Supabase, confirmation email via Resend"
+        ground="rose"
+        lines={["PICK {a} TIME.", "{it is} YOURS {immediately}"]}
+        caption="No deposit · payment in the chair"
       />
     </>
   );
