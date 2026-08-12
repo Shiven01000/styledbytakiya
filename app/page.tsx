@@ -1,6 +1,8 @@
 import { Hero } from "@/components/sections/Hero";
+import { Services } from "@/components/sections/Services";
 import { SceneStatement } from "@/components/sections/SceneStatement";
 import { SceneFullBleed } from "@/components/sections/SceneFullBleed";
+import { SceneTransform } from "@/components/sections/SceneTransform";
 
 export default function Home() {
   return (
@@ -12,20 +14,16 @@ export default function Home() {
         body="Lived-in blonde and colour correction in Edmonton. One client in the chair at a time, which is the only way to work slowly enough to get it right."
       />
 
-      <SceneFullBleed
+      {/* The one pinned set piece: the transformation runs at scroll speed. */}
+      <SceneTransform
         id="work"
-        ground="sand"
-        lines={["BEFORE {and} AFTER,", "{in the} ROUND"]}
-        caption="Honey balayage · grown out four months"
+        before="slate"
+        after="amber"
+        lines={["BOX DYE {to} BRONDE,", "{in} THREE SITTINGS"]}
+        caption="Drag-slider gallery arrives in phase 4"
       />
 
-      <SceneStatement
-        id="services"
-        tone="deep"
-        lines={["EVERY PRICE {here is a}", "STARTING POINT"]}
-        body="Length, density and whatever happened to your hair before you got here all move the number. You get the real figure at consultation, before anything is mixed."
-        action={{ href: "#booking", label: "See the menu" }}
-      />
+      <Services />
 
       <SceneFullBleed
         id="motion"

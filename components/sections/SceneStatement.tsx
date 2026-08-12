@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FadeUp } from "@/components/motion/FadeUp";
 import { MaskLine } from "@/components/motion/MaskLine";
 import { Headline } from "@/components/type/Headline";
 import { cn } from "@/lib/utils";
@@ -38,18 +39,22 @@ export function SceneStatement({
       </h2>
 
       {body ? (
-        <p className="mt-10 max-w-[52ch] font-ui text-read leading-[1.75] text-ink-body text-pretty">
-          {body}
-        </p>
+        <FadeUp delay={lines.length * 0.11}>
+          <p className="mt-10 max-w-[52ch] font-ui text-read leading-[1.75] text-ink-body text-pretty">
+            {body}
+          </p>
+        </FadeUp>
       ) : null}
 
       {action ? (
-        <Link
-          href={action.href}
-          className="mt-12 font-ui text-ui-sm tracking-ui uppercase underline decoration-1 underline-offset-[6px] transition-opacity duration-300 hover:opacity-55"
-        >
-          {action.label}
-        </Link>
+        <FadeUp delay={lines.length * 0.11 + 0.12}>
+          <Link
+            href={action.href}
+            className="mt-12 inline-block font-ui text-ui-sm tracking-ui uppercase underline decoration-1 underline-offset-[6px] transition-opacity duration-300 hover:opacity-55"
+          >
+            {action.label}
+          </Link>
+        </FadeUp>
       ) : null}
     </section>
   );

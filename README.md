@@ -54,8 +54,15 @@ second device.
   real photograph turns out to be.
 - `Preloader` — waits on `document.fonts.ready` rather than a timer, so the
   serif never swaps mid-reveal.
-- `MaskLine` — line-level reveals. Deliberately not per-character: at this size
-  in a Didone, per-character staggering reads as a gimmick.
+- `SceneTransform` — the one pinned set piece. The before-image is peeled off
+  the after-image by scroll progress with the seam tracking the edge, so the
+  transformation happens at the speed you scroll.
+- `MaskLine` / `FadeUp` — line-level reveals for statements, a quieter fade for
+  body copy and links. Deliberately not per-character: at this size in a Didone,
+  per-character staggering reads as a gimmick.
+- `Services` — the menu. On a desktop the hovered row keeps the ink while its
+  siblings drop back, and a preview trails the cursor on a spring. Touch never
+  depends on hover: every row carries its own thumbnail.
 
 Deliberately absent, because they are what made earlier passes read as
 templated: hairline rules used as structure, tracked uppercase eyebrows,
@@ -83,13 +90,12 @@ lib/                 utils, and later: supabase, availability, email
 
 ## Build phases
 
-The site is built in reviewable phases. Current state: **Phase 2 complete** —
-the hero is real; the remaining sections are placeholder shells that name what
-arrives in each later phase.
+The site is built in reviewable phases. Current state: **Phase 3 complete**.
+Photography is still stood in for by the `.backdrop-*` grounds.
 
 1. **Foundation** — tokens, fonts, Lenis, chrome, section shells ✅
 2. **Hero** — orchestrated load-in and scroll-linked exit ✅
-3. Services — cursor-following preview on desktop, thumbnails on mobile
+3. **Services** — cursor-following preview on desktop, thumbnails on mobile ✅
 4. Portfolio — circular scroll morph gallery
 5. Clips and About — in-view video playback, sticky composition
 6. Booking — Supabase schema, availability, instant confirmation, Resend email
