@@ -3,42 +3,48 @@
 /* ==========================================================================
    THEME — single source of truth for palette and type.
 
-   Direction: "Foil" — aluminum-grey ground, violet accent, brass secondary.
-   Violet is not decorative here: violet cancels brass/yellow, which is the
-   colourist's core tool. The two accents are a colour-theory pair.
+   Direction: "Foil" — brushed aluminum ground, sage accent, copper secondary.
+   The accents are a colour-theory pair from the craft itself: green cancels
+   red, copper is the warmth it cancels. Nothing here is decorative.
 
-   To revert to the imported cream direction, replace the values in this
-   block with the `cream:` values noted beside each, and swap --font-display
-   to Fraunces (plus its <link> in app/layout.tsx). Nothing else needs edits.
+   The metal is built, not painted: a cool neutral ground, fine directional
+   striations, a specular sheen that falls differently on each panel, and
+   grooved rules instead of flat hairlines.
+
+   To try the earlier cream direction, replace the values in this block with
+   the `cream:` values noted beside each and swap --face-display to Fraunces
+   (plus its <link> in app/layout.tsx). Nothing else needs edits.
    ========================================================================== */
 
 :root {
   /* --- Ground and surfaces --- */
-  --foil: #d9d6cf; /* cream: #f4f1ea */
-  --foil-shift: #cfcbc1; /* cream: #ece7dd */
-  --paper: #f5f4f1; /* cream: #faf8f3 */
-  --panel: #c6c1b6; /* cream: #e7e1d5 */
-  --eclipse: #14110f; /* inverted band; same in both directions */
+  --foil: #c9cdce; /* cream: #f4f1ea */
+  --foil-shift: #bdc2c4; /* cream: #ece7dd */
+  --paper: #e9ebeb; /* cream: #faf8f3 */
+  --panel: #adb3b5; /* cream: #e7e1d5 */
+  --eclipse: #131618; /* gunmetal band */
+  --sheen: #f5f7f7; /* specular highlight */
 
   /* --- Ink --- */
-  --ink: #171514; /* cream: #14120f */
+  --ink: #15181a; /* cream: #14120f */
 
-  /* --- Accents --- */
-  --violet: #5b3ac9;
-  --violet-deep: #3f2593;
-  --brass: #a8792e; /* large display + rules only: 2.7:1 on foil */
-  --brass-ink: #74501a; /* text-safe brass: 5.0:1 on foil */
+  /* --- Accents: green cancels red, copper is the red it cancels --- */
+  --sage: #9fb08c; /* dark bands, large fills, display only on foil */
+  --sage-deep: #46543d; /* text-safe on foil: 5.1:1 */
+  --sage-dark: #333e2c; /* hover / pressed */
+  --copper: #c77b4a; /* dark bands + display only */
+  --copper-ink: #8a4a22; /* text-safe on foil: 4.7:1 */
 
   /* --- Derived ink alphas (auto-follow --ink on a palette swap) --- */
-  --ink-body: color-mix(in srgb, var(--ink) 74%, transparent);
-  --ink-muted: color-mix(in srgb, var(--ink) 56%, transparent);
-  --ink-faint: color-mix(in srgb, var(--ink) 40%, transparent);
-  --rule: color-mix(in srgb, var(--ink) 20%, transparent);
-  --rule-soft: color-mix(in srgb, var(--ink) 12%, transparent);
+  --ink-body: color-mix(in srgb, var(--ink) 76%, transparent);
+  --ink-muted: color-mix(in srgb, var(--ink) 58%, transparent);
+  --ink-faint: color-mix(in srgb, var(--ink) 42%, transparent);
+  --rule: color-mix(in srgb, var(--ink) 18%, transparent);
+  --rule-soft: color-mix(in srgb, var(--ink) 11%, transparent);
 
   /* --- Derived paper alphas, for use on --eclipse --- */
-  --paper-body: color-mix(in srgb, var(--paper) 72%, transparent);
-  --paper-muted: color-mix(in srgb, var(--paper) 52%, transparent);
+  --paper-body: color-mix(in srgb, var(--paper) 74%, transparent);
+  --paper-muted: color-mix(in srgb, var(--paper) 54%, transparent);
   --rule-invert: color-mix(in srgb, var(--paper) 22%, transparent);
 
   /* --- Typefaces --- */
@@ -57,6 +63,7 @@
   --color-paper: var(--paper);
   --color-panel: var(--panel);
   --color-eclipse: var(--eclipse);
+  --color-sheen: var(--sheen);
   --color-ink: var(--ink);
   --color-ink-body: var(--ink-body);
   --color-ink-muted: var(--ink-muted);
@@ -66,17 +73,18 @@
   --color-paper-body: var(--paper-body);
   --color-paper-muted: var(--paper-muted);
   --color-rule-invert: var(--rule-invert);
-  --color-violet: var(--violet);
-  --color-violet-deep: var(--violet-deep);
-  --color-brass: var(--brass);
-  --color-brass-ink: var(--brass-ink);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-sage-dark: var(--sage-dark);
+  --color-copper: var(--copper);
+  --color-copper-ink: var(--copper-ink);
 
   /* Typefaces */
   --font-display: var(--face-display);
   --font-body: var(--face-body);
 
-  /* Type scale — display sizes are fluid and intentionally far apart, so the
-     jump from a label to the brand name is a full order of magnitude. */
+  /* Type scale — display sizes sit intentionally far apart, so the jump from
+     a label to the brand name is a full order of magnitude. */
   --text-micro: 10px;
   --text-label: 11px;
   --text-caption: 12px;
@@ -125,33 +133,160 @@
   }
 
   ::selection {
-    background-color: var(--violet);
+    background-color: var(--sage-deep);
     color: var(--paper);
   }
 
   :focus-visible {
-    outline: 2px solid var(--violet);
+    outline: 2px solid var(--sage-deep);
     outline-offset: 3px;
+  }
+}
+
+/* ==========================================================================
+   METAL — the site is a stack of brushed panels, each catching light at a
+   slightly different angle. Striations are a tiled gradient and the sheen is
+   a single linear gradient, so a panel costs one paint and nothing per frame.
+   ========================================================================== */
+
+@layer components {
+  .metal {
+    --brush: color-mix(in srgb, var(--ink) 4%, transparent);
+    --gloss: color-mix(in srgb, var(--sheen) 60%, transparent);
+    background-color: var(--foil);
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        var(--brush) 0 1px,
+        transparent 1px 5px
+      ),
+      linear-gradient(
+        104deg,
+        transparent 0%,
+        var(--gloss) 16%,
+        transparent 38%,
+        transparent 72%,
+        color-mix(in srgb, var(--sheen) 34%, transparent) 92%,
+        transparent 100%
+      );
+  }
+
+  /* Same sheet, light arriving from the other side. Alternate down the page so
+     consecutive panels never look like one flat field. */
+  .metal-reverse {
+    --brush: color-mix(in srgb, var(--ink) 4%, transparent);
+    --gloss: color-mix(in srgb, var(--sheen) 46%, transparent);
+    background-color: var(--foil-shift);
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        var(--brush) 0 1px,
+        transparent 1px 5px
+      ),
+      linear-gradient(
+        -98deg,
+        transparent 0%,
+        var(--gloss) 20%,
+        transparent 46%,
+        transparent 78%,
+        color-mix(in srgb, var(--sheen) 26%, transparent) 96%,
+        transparent 100%
+      );
+  }
+
+  .metal-dark {
+    background-color: var(--eclipse);
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--paper) 3%, transparent) 0 1px,
+        transparent 1px 5px
+      ),
+      linear-gradient(
+        104deg,
+        transparent 0%,
+        color-mix(in srgb, var(--paper) 9%, transparent) 18%,
+        transparent 44%,
+        transparent 80%,
+        color-mix(in srgb, var(--paper) 5%, transparent) 96%,
+        transparent 100%
+      );
+  }
+
+  /* Grooved rule: a dark scribe with a lit edge under it, the way a machined
+     line catches light. Replaces flat 1px hairlines throughout. */
+  .engrave {
+    border-top: 1px solid var(--rule);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--sheen) 72%, transparent);
+  }
+
+  .engrave-invert {
+    border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 60%, transparent);
+  }
+
+  /* Polished lettering: a narrow dark-on-dark gradient so display type reads
+     as a material rather than a flat fill. Lightest stop still holds 6.6:1. */
+  .lettering {
+    color: var(--ink);
+  }
+
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .lettering {
+      background-image: linear-gradient(
+        176deg,
+        #3c4245 0%,
+        var(--ink) 46%,
+        #2b3033 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lettering-invert {
+      background-image: linear-gradient(
+        176deg,
+        #ffffff 0%,
+        var(--paper) 52%,
+        #b9bfc1 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
   }
 
   /* Placeholder media wells. The hatch marks an asset as not-yet-real, so
      unfinished tiles read as deliberate rather than broken. */
   .well {
     background-color: var(--panel);
-    background-image: repeating-linear-gradient(
-      122deg,
-      color-mix(in srgb, var(--ink) 9%, transparent) 0 10px,
-      transparent 10px 22px
-    );
+    background-image:
+      repeating-linear-gradient(
+        122deg,
+        color-mix(in srgb, var(--ink) 7%, transparent) 0 9px,
+        transparent 9px 26px
+      ),
+      linear-gradient(
+        104deg,
+        color-mix(in srgb, var(--sheen) 30%, transparent) 0%,
+        transparent 40%
+      );
   }
 
-  .well-violet {
+  .well-sage {
     background-color: var(--panel);
-    background-image: repeating-linear-gradient(
-      122deg,
-      color-mix(in srgb, var(--violet) 18%, transparent) 0 10px,
-      transparent 10px 22px
-    );
+    background-image:
+      repeating-linear-gradient(
+        122deg,
+        color-mix(in srgb, var(--sage) 30%, transparent) 0 10px,
+        transparent 10px 22px
+      ),
+      linear-gradient(
+        104deg,
+        color-mix(in srgb, var(--sheen) 24%, transparent) 0%,
+        transparent 40%
+      );
   }
 }
 
@@ -181,8 +316,8 @@ html.lenis body {
 }
 
 /* ==========================================================================
-   REDUCED MOTION — blanket floor. Individual components additionally branch
-   on useReducedMotion() to swap choreography for a static composition.
+   REDUCED MOTION — blanket floor. Components additionally branch on
+   useReducedMotion() to swap choreography for the finished composition.
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {

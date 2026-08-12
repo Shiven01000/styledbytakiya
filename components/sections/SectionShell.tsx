@@ -1,11 +1,14 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type Tone = "foil" | "shift" | "eclipse";
 
 const TONE: Record<Tone, string> = {
-  foil: "bg-foil text-ink",
-  shift: "bg-foil-shift text-ink",
-  eclipse: "bg-eclipse text-paper",
+  foil: "metal text-ink",
+  shift: "metal-reverse text-ink",
+  eclipse: "metal-dark text-paper",
 };
 
 export function SectionShell({
@@ -27,7 +30,17 @@ export function SectionShell({
   arriving: string;
   tone?: Tone;
 }) {
+  const reduce = useReducedMotion();
   const inverted = tone === "eclipse";
+
+  const reveal = reduce
+    ? {}
+    : {
+        initial: { opacity: 0, y: 26 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "0px 0px -12% 0px" },
+        transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
+      };
 
   return (
     <section
@@ -38,23 +51,32 @@ export function SectionShell({
         TONE[tone],
       )}
     >
-      <div className="flex flex-col gap-6">
+      <motion.div {...reveal} className="flex flex-col gap-6">
         <span
           className={cn(
             "text-micro font-medium tracking-micro uppercase",
-            inverted ? "text-brass" : "text-violet",
+            inverted ? "text-copper" : "text-sage-deep",
           )}
         >
           {index} / {label}
         </span>
 
-        <h2 className="max-w-[22ch] font-display text-d-lg leading-[0.94] font-medium tracking-display">
+        <h2
+          className={cn(
+            "max-w-[22ch] font-display text-d-lg leading-[0.94] font-medium tracking-display",
+            inverted ? "lettering-invert" : "lettering",
+          )}
+        >
           {title}{" "}
           <em
             className={cn(
               "italic font-light",
-              inverted ? "text-brass" : "text-violet",
+              inverted ? "text-sage" : "text-sage-deep",
             )}
+            style={{
+              WebkitTextFillColor: "currentcolor",
+              backgroundImage: "none",
+            }}
           >
             {accent}
           </em>
@@ -71,10 +93,9 @@ export function SectionShell({
 
         <div
           className={cn(
-            "mt-4 flex max-w-md items-end p-3",
-            inverted ? "well-violet" : "well",
+            "mt-4 flex aspect-video max-w-md items-end p-3 outline-1 outline-offset-[-1px]",
+            inverted ? "well-sage outline-rule-invert" : "well outline-rule",
           )}
-          style={{ aspectRatio: "16 / 9" }}
           aria-hidden
         >
           <span className="text-micro font-medium tracking-label text-ink-faint uppercase">
@@ -87,12 +108,12 @@ export function SectionShell({
             "mt-2 border-l pl-3 text-micro font-medium tracking-label uppercase",
             inverted
               ? "border-rule-invert text-paper-muted"
-              : "border-rule text-brass-ink",
+              : "border-rule text-copper-ink",
           )}
         >
           {arriving}
         </p>
-      </div>
+      </motion.div>
     </section>
   );
 }

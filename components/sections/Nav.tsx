@@ -95,8 +95,8 @@ export function Nav() {
                 className={cn(
                   "text-label font-medium tracking-label uppercase transition-colors duration-500",
                   inverted
-                    ? "text-paper-muted hover:text-brass"
-                    : "text-ink-muted hover:text-violet",
+                    ? "text-paper-muted hover:text-sage"
+                    : "text-ink-muted hover:text-sage-deep",
                 )}
               >
                 {item.label}
@@ -110,8 +110,8 @@ export function Nav() {
           className={cn(
             "flex min-h-11 items-center px-4 text-label font-medium tracking-label uppercase transition-colors duration-300",
             inverted
-              ? "bg-paper text-ink hover:bg-brass"
-              : "bg-violet text-paper hover:bg-ink",
+              ? "bg-paper text-ink hover:bg-sage"
+              : "bg-sage-deep text-paper hover:bg-ink",
           )}
         >
           Book

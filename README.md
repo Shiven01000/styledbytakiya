@@ -19,11 +19,21 @@ after the appointment, so there is no online checkout.
 
 ## Design direction
 
-Palette direction is **Foil** — an aluminum-grey ground with a violet accent
-and a brass secondary. Violet is not arbitrary: violet cancels brass and
-yellow, which is the colourist's actual tool, so the two accents are a
-colour-theory pair. Type is **Boska** (display) over **Switzer** (body), both
-from Fontshare.
+Palette direction is **Foil** — a brushed aluminum ground with a sage accent
+and a copper secondary. The accents are a colour-theory pair taken from the
+craft: green cancels red, and copper is the warmth it cancels. Type is
+**Boska** (display) over **Switzer** (body), both from Fontshare.
+
+The metal is built rather than painted, and these four pieces are the visual
+vocabulary to extend rather than replace with flat fills:
+
+- `.metal` / `.metal-reverse` / `.metal-dark` — fine directional striations
+  under a specular sheen, with the sheen angle flipped on alternating panels so
+  the page reads as a stack of brushed sheets rather than one flat field
+- `.engrave` — a dark scribe with a lit edge beneath it, in place of flat 1px
+  hairlines
+- `.lettering` / `.lettering-invert` — a narrow dark-on-dark gradient on
+  display type so it reads as a material
 
 Every palette and type value lives in one `:root` block at the top of
 `app/globals.css`. Swapping the whole site to the alternative cream direction
@@ -51,12 +61,12 @@ lib/                 utils, and later: supabase, availability, email
 
 ## Build phases
 
-The site is built in reviewable phases. Current state: **Phase 1 complete** —
-tokens, typefaces, smooth scroll, nav and footer, and placeholder section
-shells that name what arrives in each later phase.
+The site is built in reviewable phases. Current state: **Phase 2 complete** —
+the hero is real; the remaining sections are placeholder shells that name what
+arrives in each later phase.
 
 1. **Foundation** — tokens, fonts, Lenis, chrome, section shells ✅
-2. Hero — orchestrated load-in and scroll-linked exit
+2. **Hero** — orchestrated load-in and scroll-linked exit ✅
 3. Services — cursor-following preview on desktop, thumbnails on mobile
 4. Portfolio — circular scroll morph gallery
 5. Clips and About — in-view video playback, sticky composition
