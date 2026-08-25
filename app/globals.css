@@ -165,6 +165,53 @@
     );
   }
 
+  /* Photographs are set INTO the coloured ground rather than over it: opaque
+     through the middle, dissolving to nothing at the edges. Three things fall
+     out of this — the lit ground stays visible and the palette survives, the
+     subject keeps its true colour where it matters (this is a colourist's
+     portfolio, so recolouring the hair is not an option), and the cluttered
+     salon edges of the current set dissolve instead of being cropped. */
+  .photo-inset {
+    -webkit-mask-image: radial-gradient(
+      80% 72% at 50% 46%,
+      #000 48%,
+      rgb(0 0 0 / 0.92) 66%,
+      rgb(0 0 0 / 0.55) 82%,
+      rgb(0 0 0 / 0.18) 93%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      80% 72% at 50% 46%,
+      #000 48%,
+      rgb(0 0 0 / 0.92) 66%,
+      rgb(0 0 0 / 0.55) 82%,
+      rgb(0 0 0 / 0.18) 93%,
+      transparent 100%
+    );
+  }
+
+  /* The same idea tuned for a viewport-wide scene. A mask sized to the plate
+     leaves the side edges almost opaque once the element is this wide, so the
+     ellipse is pulled in horizontally to make the sides actually dissolve. */
+  .photo-inset-wide {
+    -webkit-mask-image: radial-gradient(
+      58% 80% at 50% 47%,
+      #000 38%,
+      rgb(0 0 0 / 0.88) 60%,
+      rgb(0 0 0 / 0.45) 80%,
+      rgb(0 0 0 / 0.14) 92%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      58% 80% at 50% 47%,
+      #000 38%,
+      rgb(0 0 0 / 0.88) 60%,
+      rgb(0 0 0 / 0.45) 80%,
+      rgb(0 0 0 / 0.14) 92%,
+      transparent 100%
+    );
+  }
+
   /* Film grain. One static paint; keeps the stand-in grounds from looking
      like flat CSS gradients. */
   .grain::before {

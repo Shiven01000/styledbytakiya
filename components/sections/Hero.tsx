@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { Backdrop, type Ground } from "@/components/media/Backdrop";
+import { PhotoPlate, type Ground } from "@/components/media/Backdrop";
 import { PHOTOS, type Photo } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
@@ -27,9 +27,11 @@ const SLIDES: { ground: Ground; photo: Photo; caption: string }[] = [
 const HOLD_MS = 6200;
 
 /**
- * The hero is a photograph, full bleed, and almost nothing else. It holds each
- * frame long enough to be looked at, drifts slowly so it never sits perfectly
- * still, and hands off to the next with a crossfade rather than a slide.
+ * The photograph sits as a plate on a lit colour field rather than filling the
+ * frame, the way a subject sits on a seamless in a studio. The field is what
+ * carries the palette, and the plate's edges dissolve into it, so the work is
+ * presented rather than merely displayed — and the cluttered edges of the
+ * current set never appear at all.
  */
 export function Hero() {
   const reduce = useReducedMotion();
@@ -40,8 +42,7 @@ export function Hero() {
     target: section,
     offset: ["start start", "end start"],
   });
-  /* The photograph lags the scroll slightly on the way out. */
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
+  const plateY = useTransform(scrollYProgress, [0, 1], ["0%", "-14%"]);
   const chromeFade = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
 
   useEffect(() => {
@@ -60,44 +61,52 @@ export function Hero() {
       data-tone="media"
       className="relative h-svh overflow-hidden"
     >
-      <motion.div
-        className="absolute inset-0"
-        style={reduce ? undefined : { y: imageY }}
-      >
-        {SLIDES.map((slide, slideIndex) => (
+      {SLIDES.map((slide, slideIndex) => {
+        const showing = slideIndex === index;
+
+        return (
           <motion.div
             key={slide.photo.src}
             className="absolute inset-0"
             initial={false}
-            animate={{ opacity: slideIndex === index ? 1 : 0 }}
+            animate={{ opacity: showing ? 1 : 0 }}
             transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
           >
+            {/* The lit field. This is where the palette lives. */}
+            <div
+              className={cn(
+                "backdrop grain absolute inset-0",
+                `backdrop-${slide.ground}`,
+              )}
+            />
+
+            {/* The plate. Drifts on scroll, breathes while it holds. */}
             <motion.div
-              className="h-full w-full"
-              animate={
-                reduce || slideIndex !== index
-                  ? { scale: 1 }
-                  : { scale: [1, 1.07] }
-              }
-              transition={{ duration: HOLD_MS / 1000 + 2, ease: "linear" }}
+              className="absolute inset-0 flex items-center justify-center"
+              style={reduce ? undefined : { y: plateY }}
             >
-              <Backdrop
-                ground={slide.ground}
-                photo={slide.photo}
-                priority={slideIndex === 0}
-                sizes="100vw"
-                className="h-full w-full"
-              />
+              <motion.div
+                className="relative aspect-3/4 h-[62svh] max-w-[80vw] md:h-[72svh] md:max-w-[46vw]"
+                animate={
+                  reduce || !showing ? { scale: 1 } : { scale: [1, 1.045] }
+                }
+                transition={{ duration: HOLD_MS / 1000 + 2, ease: "linear" }}
+              >
+                <PhotoPlate
+                  photo={slide.photo}
+                  priority={slideIndex === 0}
+                  sizes="(max-width: 768px) 80vw, 46vw"
+                  className="h-full w-full"
+                />
+              </motion.div>
             </motion.div>
           </motion.div>
-        ))}
-      </motion.div>
+        );
+      })}
 
-      {/* The chrome is white over these scenes, so it needs its own ground
-          when a photograph happens to be bright at the top. */}
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 z-1 h-40 bg-linear-to-b from-black/45 to-transparent"
+        className="absolute inset-x-0 top-0 z-1 h-40 bg-linear-to-b from-black/35 to-transparent"
       />
 
       <motion.div
@@ -105,16 +114,15 @@ export function Hero() {
         style={reduce ? undefined : { opacity: chromeFade }}
       >
         <div className="flex items-end justify-between gap-6">
-          <p className="font-ui text-ui-sm tracking-ui text-white/70 uppercase">
+          <p className="font-ui text-ui-sm tracking-ui text-white/75 uppercase">
             {SLIDES[index].caption}
           </p>
-          <span className="font-ui text-ui-sm tracking-ui text-white/50 uppercase">
+          <span className="font-ui text-ui-sm tracking-ui text-white/55 uppercase">
             Scroll
           </span>
         </div>
       </motion.div>
 
-      {/* Frame markers */}
       <div className="absolute top-1/2 left-gutter z-3 flex -translate-y-1/2 flex-col gap-3">
         {SLIDES.map((slide, slideIndex) => (
           <button

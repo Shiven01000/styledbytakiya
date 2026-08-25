@@ -35,9 +35,21 @@ no tinted panels, no coloured buttons.
 ## Photography
 
 Every image slot points at a key in `lib/images.ts` rather than a file path, so
-swapping an image is a one-line edit and no component changes. `Backdrop` takes
-an optional `photo`; without one it falls back to a lit `.backdrop-*` ground, so
-slots can be filled in one at a time rather than all at once.
+swapping an image is a one-line edit and no component changes.
+
+Photographs are set **into** a lit colour field rather than over it, the way a
+subject sits on a seamless in a studio. `Backdrop` paints the field; `PhotoPlate`
+paints a photograph with its edges dissolving into whatever is behind it. Three
+things follow from that arrangement:
+
+- the palette stays present, because the field is visible around every image;
+- the subject keeps its true colour in the middle, which matters because this is
+  a colourist's portfolio and tinting the hair would misrepresent the work;
+- the cluttered edges of the current set never resolve into anything legible.
+
+`PhotoPlate` takes `spread="plate"` for a portrait panel and `spread="wide"` for
+a viewport-width scene. The two need different masks: an ellipse sized for a
+plate leaves the side edges almost opaque once the element is viewport-wide.
 
 The vignette and grain sit over photographs as well as fallbacks. That is
 deliberate — the current set was shot on different days in different light, and

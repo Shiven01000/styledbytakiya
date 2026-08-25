@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { Backdrop, type Ground } from "@/components/media/Backdrop";
+import { Backdrop, PhotoPlate, type Ground } from "@/components/media/Backdrop";
 import type { Photo } from "@/lib/images";
 import { MaskLine } from "@/components/motion/MaskLine";
 import { Headline } from "@/components/type/Headline";
@@ -41,11 +41,19 @@ export function SceneFullBleed({
       data-tone="media"
       className="relative h-[104svh] overflow-hidden"
     >
+      {/* The lit field stays put; only the photograph drifts through it. */}
+      <Backdrop ground={ground} className="absolute inset-0" />
+
       <motion.div
-        className="absolute -inset-y-[12%] inset-x-0"
+        className="absolute inset-x-0 -inset-y-[12%]"
         style={reduce ? undefined : { y }}
       >
-        <Backdrop ground={ground} photo={photo} className="h-full w-full" />
+        <PhotoPlate
+          photo={photo}
+          spread="wide"
+          sizes="100vw"
+          className="absolute inset-0"
+        />
       </motion.div>
 
       {/* Type over photography needs a guaranteed ground. A bottom-weighted

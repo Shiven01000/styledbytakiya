@@ -8,7 +8,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { Backdrop, type Ground } from "@/components/media/Backdrop";
+import { Backdrop, PhotoPlate, type Ground } from "@/components/media/Backdrop";
 import type { Photo } from "@/lib/images";
 import { MaskLine } from "@/components/motion/MaskLine";
 import { Headline } from "@/components/type/Headline";
@@ -23,7 +23,6 @@ import { Headline } from "@/components/type/Headline";
  */
 export function SceneTransform({
   id,
-  before,
   after,
   beforePhoto,
   afterPhoto,
@@ -31,7 +30,7 @@ export function SceneTransform({
   caption,
 }: {
   id?: string;
-  before: Ground;
+  /** The single lit field both states dissolve into. */
   after: Ground;
   beforePhoto?: Photo;
   afterPhoto?: Photo;
@@ -64,10 +63,14 @@ export function SceneTransform({
       className="relative h-[260svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden">
-        <Backdrop
-          ground={after}
+        {/* One lit field under both states, so the edges dissolve into colour
+            and the wipe runs through the solid middle where the work is. */}
+        <Backdrop ground={after} className="absolute inset-0" />
+        <PhotoPlate
           photo={afterPhoto}
-          className="absolute inset-0 h-full w-full"
+          spread="wide"
+          sizes="100vw"
+          className="absolute inset-0"
         />
 
         {/* Reduced motion settles on the finished result rather than the before. */}
@@ -75,7 +78,12 @@ export function SceneTransform({
           className="absolute inset-0"
           style={reduce ? { clipPath: "inset(0 100% 0 0)" } : { clipPath }}
         >
-          <Backdrop ground={before} photo={beforePhoto} className="h-full w-full" />
+          <PhotoPlate
+            photo={beforePhoto}
+            spread="wide"
+            sizes="100vw"
+            className="absolute inset-0"
+          />
         </motion.div>
 
         {!reduce && (

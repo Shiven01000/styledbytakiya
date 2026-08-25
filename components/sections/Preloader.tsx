@@ -38,12 +38,20 @@ export function Preloader() {
       fontsReady = true;
     });
 
+    /* Hard failsafe. requestAnimationFrame is throttled in background tabs and
+       on loaded devices, which can leave the counter crawling and the curtain
+       never lifting — the worst failure this component has, since it blocks the
+       whole site. A timer is not throttled the same way, so it always ends. */
+    const failsafe = window.setTimeout(() => setDone(true), MAX_MS + 800);
+
     const tick = () => {
       const elapsed = performance.now() - start;
       const release = (fontsReady && elapsed > MIN_MS) || elapsed > MAX_MS;
       const target = release ? 100 : Math.min(92, (elapsed / MIN_MS) * 92);
 
-      value += (target - value) * 0.1;
+      /* Close the last stretch quickly once released, so the run-out to 100
+         is not at the mercy of the frame rate. */
+      value += (target - value) * (release ? 0.3 : 0.1);
       if (release && value > 99.3) value = 100;
       setProgress(value);
 
@@ -55,7 +63,10 @@ export function Preloader() {
     };
 
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(failsafe);
+    };
   }, [reduce]);
 
   /* Hold the page still behind the curtain. */

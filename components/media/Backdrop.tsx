@@ -4,17 +4,16 @@ import { cn } from "@/lib/utils";
 
 export type Ground = "amber" | "rose" | "olive" | "slate" | "sand";
 
+/** Interim screenshots carry Instagram UI and burned-in "After" text near the
+ *  edges. Cropping in and biasing downward pushes most of it out of frame; it
+ *  costs sharpness, which the camera-roll originals will give back. */
+const INTERIM_CROP = "scale-[1.22] object-[50%_58%]";
+
 /**
- * Every image well on the site.
+ * A lit ground, optionally carrying a photograph edge to edge.
  *
- * Pass a `photo` and it renders the photograph; pass nothing and it falls back
- * to the lit `ground` it was built with, so slots can be filled in one at a
- * time rather than all at once.
- *
- * The vignette and grain sit over the photograph too, not just the fallback.
- * That is deliberate: the current set was shot on different days in different
- * light, and a shared vignette and grain is what makes a mixed bag read as one
- * body of work.
+ * Used where the image IS the surface — full-bleed scenes, the wipe, thumbs.
+ * For a photograph presented on a colour field, use `PhotoPlate`.
  */
 export function Backdrop({
   ground = "amber",
@@ -33,11 +32,7 @@ export function Backdrop({
 }) {
   return (
     <div
-      className={cn(
-        "backdrop grain",
-        photo ? "bg-ink" : `backdrop-${ground}`,
-        className,
-      )}
+      className={cn("backdrop grain", `backdrop-${ground}`, className)}
       role={photo ? undefined : "img"}
       aria-label={photo ? undefined : "Photograph placeholder"}
     >
@@ -48,16 +43,58 @@ export function Backdrop({
           fill
           sizes={sizes}
           priority={priority}
-          className={cn(
-            "object-cover",
-            /* Interim screenshots carry Instagram UI in the corners. A small
-               crop-in pushes most of it outside the frame; it costs a little
-               sharpness, which the originals will give back. */
-            photo.interim && "scale-[1.14]",
-          )}
+          className={cn("object-cover", photo.interim && INTERIM_CROP)}
         />
       ) : null}
       {children}
+    </div>
+  );
+}
+
+/**
+ * A photograph presented on a colour field, the way a subject sits on a
+ * seamless in a studio.
+ *
+ * It paints no background of its own — that is the whole point. The field
+ * behind shows through as the photograph's edges dissolve, so the plate has no
+ * boundary, the palette stays present, and the cluttered edges of the current
+ * set never resolve into anything legible.
+ */
+export function PhotoPlate({
+  photo,
+  spread = "plate",
+  sizes = "100vw",
+  priority,
+  className,
+}: {
+  photo?: Photo;
+  /** "plate" for a portrait panel, "wide" for a viewport-width scene. */
+  spread?: "plate" | "wide";
+  sizes?: string;
+  priority?: boolean;
+  className?: string;
+}) {
+  if (!photo) return null;
+
+  return (
+    /* The mask sits on the container, not the image: the container is what
+       clips the crop-in, and fading the image itself would fade a box larger
+       than the plate and leave a hard edge behind. */
+    <div
+      className={cn(
+        spread === "wide" ? "photo-inset-wide" : "photo-inset",
+        "relative overflow-hidden",
+        className,
+      )}
+    >
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={cn("object-cover", photo.interim && INTERIM_CROP)}
+      />
     </div>
   );
 }
