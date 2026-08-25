@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Backdrop, type Ground } from "@/components/media/Backdrop";
+import type { Photo } from "@/lib/images";
 import { MaskLine } from "@/components/motion/MaskLine";
 import { Headline } from "@/components/type/Headline";
 
@@ -24,12 +25,16 @@ export function SceneTransform({
   id,
   before,
   after,
+  beforePhoto,
+  afterPhoto,
   lines,
   caption,
 }: {
   id?: string;
   before: Ground;
   after: Ground;
+  beforePhoto?: Photo;
+  afterPhoto?: Photo;
   lines: string[];
   caption?: string;
 }) {
@@ -59,14 +64,18 @@ export function SceneTransform({
       className="relative h-[260svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden">
-        <Backdrop ground={after} className="absolute inset-0 h-full w-full" />
+        <Backdrop
+          ground={after}
+          photo={afterPhoto}
+          className="absolute inset-0 h-full w-full"
+        />
 
         {/* Reduced motion settles on the finished result rather than the before. */}
         <motion.div
           className="absolute inset-0"
           style={reduce ? { clipPath: "inset(0 100% 0 0)" } : { clipPath }}
         >
-          <Backdrop ground={before} className="h-full w-full" />
+          <Backdrop ground={before} photo={beforePhoto} className="h-full w-full" />
         </motion.div>
 
         {!reduce && (

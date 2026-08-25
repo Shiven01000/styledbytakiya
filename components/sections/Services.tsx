@@ -93,6 +93,8 @@ export function Services() {
                     to depend on. */}
                 <Backdrop
                   ground={service.ground}
+                  photo={service.photo}
+                  sizes="44px"
                   className="h-14 w-11 shrink-0 self-center md:hidden"
                 />
 
@@ -127,6 +129,8 @@ export function Services() {
         >
           <Backdrop
             ground={SERVICES[active ?? 0].ground}
+            photo={SERVICES[active ?? 0].photo}
+            sizes="232px"
             className="aspect-3/4 w-full"
           />
         </motion.div>

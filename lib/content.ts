@@ -1,4 +1,5 @@
 import type { Ground } from "@/components/media/Backdrop";
+import { PHOTOS, type Photo } from "@/lib/images";
 
 /**
  * Placeholder menu. Names use the brace convention from `Headline` — braced
@@ -12,6 +13,7 @@ export type Service = {
   note: string;
   priceFrom: number;
   ground: Ground;
+  photo?: Photo;
 };
 
 export const SERVICES: Service[] = [
@@ -21,6 +23,7 @@ export const SERVICES: Service[] = [
     note: "Dry cut · 90 min",
     priceFrom: 95,
     ground: "sand",
+    photo: PHOTOS.texturedCrop,
   },
   {
     slug: "lived-in-balayage",
@@ -28,6 +31,7 @@ export const SERVICES: Service[] = [
     note: "Colour · 3–4 hrs",
     priceFrom: 260,
     ground: "amber",
+    photo: PHOTOS.ashDimensional,
   },
   {
     slug: "colour-correction",
@@ -35,6 +39,7 @@ export const SERVICES: Service[] = [
     note: "Consultation first · 4–6 hrs",
     priceFrom: 420,
     ground: "slate",
+    photo: PHOTOS.icyBlondeWaves,
   },
   {
     slug: "bridal",
@@ -42,6 +47,7 @@ export const SERVICES: Service[] = [
     note: "Two sittings",
     priceFrom: 180,
     ground: "rose",
+    photo: PHOTOS.glossyBlackBlowout,
   },
   {
     slug: "silk-press",
@@ -49,6 +55,7 @@ export const SERVICES: Service[] = [
     note: "Smoothing · 2 hrs",
     priceFrom: 110,
     ground: "olive",
+    photo: PHOTOS.blueBlackLayers,
   },
   {
     slug: "extensions",
@@ -56,5 +63,6 @@ export const SERVICES: Service[] = [
     note: "Install and blend · 4 hrs",
     priceFrom: 340,
     ground: "sand",
+    photo: PHOTOS.auburnWaves,
   },
 ];

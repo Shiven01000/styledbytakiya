@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Backdrop, type Ground } from "@/components/media/Backdrop";
+import type { Photo } from "@/lib/images";
 import { MaskLine } from "@/components/motion/MaskLine";
 import { Headline } from "@/components/type/Headline";
 
@@ -14,11 +15,13 @@ import { Headline } from "@/components/type/Headline";
 export function SceneFullBleed({
   id,
   ground,
+  photo,
   lines,
   caption,
 }: {
   id?: string;
   ground: Ground;
+  photo?: Photo;
   lines: string[];
   caption?: string;
 }) {
@@ -42,7 +45,7 @@ export function SceneFullBleed({
         className="absolute -inset-y-[12%] inset-x-0"
         style={reduce ? undefined : { y }}
       >
-        <Backdrop ground={ground} className="h-full w-full" />
+        <Backdrop ground={ground} photo={photo} className="h-full w-full" />
       </motion.div>
 
       {/* Type over photography needs a guaranteed ground. A bottom-weighted
@@ -51,6 +54,10 @@ export function SceneFullBleed({
       <div
         aria-hidden
         className="absolute inset-0 z-1 bg-linear-to-t from-black/75 via-black/25 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 z-1 h-40 bg-linear-to-b from-black/45 to-transparent"
       />
 
       <div className="relative z-2 flex h-full flex-col items-center justify-end px-gutter pb-[13vh] text-center">

@@ -30,10 +30,28 @@ amount of UI text. Type is **Bodoni Moda** over **Switzer**.
 | `ink`        | `#181615` | type              |
 
 **There is no accent colour.** Colour comes from photography and nowhere else —
-no tinted panels, no coloured buttons. Until real photographs exist the
-`.backdrop-*` classes stand in as art-directed studio grounds (a lit seamless
-ground with vignette and grain); they are placeholders and come out when the
-real imagery lands.
+no tinted panels, no coloured buttons.
+
+## Photography
+
+Every image slot points at a key in `lib/images.ts` rather than a file path, so
+swapping an image is a one-line edit and no component changes. `Backdrop` takes
+an optional `photo`; without one it falls back to a lit `.backdrop-*` ground, so
+slots can be filled in one at a time rather than all at once.
+
+The vignette and grain sit over photographs as well as fallbacks. That is
+deliberate — the current set was shot on different days in different light, and
+a shared vignette and grain is what makes a mixed bag read as one body of work.
+
+**Current images are interim.** They are screenshots of Instagram posts, so they
+carry app UI and burned-in "After" / "Result" overlays and are only ~1178px
+wide, which is soft at full bleed. Interim photos are flagged `interim: true`
+and get a small crop-in that pushes most of the corner UI outside the frame, at
+some cost in sharpness. When camera-roll originals arrive, drop them into
+`public/images/work/` under the same filenames and clear the flag.
+
+The `photos/` folder at the repo root is a git-ignored drop folder for raw
+source files.
 
 **One typographic device carries the personality:** nouns in uppercase serif,
 the words joining them in lowercase italic.

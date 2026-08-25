@@ -3,12 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Backdrop, type Ground } from "@/components/media/Backdrop";
+import { PHOTOS, type Photo } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
-const SLIDES: { ground: Ground; caption: string }[] = [
-  { ground: "amber", caption: "Lived-in balayage · three sessions" },
-  { ground: "slate", caption: "Ash correction · box dye lifted" },
-  { ground: "rose", caption: "Bridal · low chignon" },
+const SLIDES: { ground: Ground; photo: Photo; caption: string }[] = [
+  {
+    ground: "amber",
+    photo: PHOTOS.auburnWaves,
+    caption: "Copper gloss · lived-in waves",
+  },
+  {
+    ground: "slate",
+    photo: PHOTOS.icyBlondeWaves,
+    caption: "Ash blonde · dimensional lift",
+  },
+  {
+    ground: "rose",
+    photo: PHOTOS.lavenderCarve,
+    caption: "Lavender · carved detail",
+  },
 ];
 
 const HOLD_MS = 6200;
@@ -53,7 +66,7 @@ export function Hero() {
       >
         {SLIDES.map((slide, slideIndex) => (
           <motion.div
-            key={slide.ground}
+            key={slide.photo.src}
             className="absolute inset-0"
             initial={false}
             animate={{ opacity: slideIndex === index ? 1 : 0 }}
@@ -68,14 +81,27 @@ export function Hero() {
               }
               transition={{ duration: HOLD_MS / 1000 + 2, ease: "linear" }}
             >
-              <Backdrop ground={slide.ground} className="h-full w-full" />
+              <Backdrop
+                ground={slide.ground}
+                photo={slide.photo}
+                priority={slideIndex === 0}
+                sizes="100vw"
+                className="h-full w-full"
+              />
             </motion.div>
           </motion.div>
         ))}
       </motion.div>
 
+      {/* The chrome is white over these scenes, so it needs its own ground
+          when a photograph happens to be bright at the top. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 z-1 h-40 bg-linear-to-b from-black/45 to-transparent"
+      />
+
       <motion.div
-        className="relative flex h-full flex-col justify-end px-gutter pb-8"
+        className="relative z-2 flex h-full flex-col justify-end px-gutter pb-8"
         style={reduce ? undefined : { opacity: chromeFade }}
       >
         <div className="flex items-end justify-between gap-6">
@@ -89,10 +115,10 @@ export function Hero() {
       </motion.div>
 
       {/* Frame markers */}
-      <div className="absolute top-1/2 left-gutter z-10 flex -translate-y-1/2 flex-col gap-3">
+      <div className="absolute top-1/2 left-gutter z-3 flex -translate-y-1/2 flex-col gap-3">
         {SLIDES.map((slide, slideIndex) => (
           <button
-            key={slide.ground}
+            key={slide.photo.src}
             type="button"
             onClick={() => setIndex(slideIndex)}
             className="flex h-6 w-6 items-center justify-center"

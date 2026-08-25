@@ -3,6 +3,7 @@ import { Services } from "@/components/sections/Services";
 import { SceneStatement } from "@/components/sections/SceneStatement";
 import { SceneFullBleed } from "@/components/sections/SceneFullBleed";
 import { SceneTransform } from "@/components/sections/SceneTransform";
+import { PHOTOS } from "@/lib/images";
 
 export default function Home() {
   return (
@@ -19,8 +20,10 @@ export default function Home() {
         id="work"
         before="slate"
         after="amber"
-        lines={["BOX DYE {to} BRONDE,", "{in} THREE SITTINGS"]}
-        caption="Drag-slider gallery arrives in phase 4"
+        beforePhoto={PHOTOS.brassyGrownOut}
+        afterPhoto={PHOTOS.ashDimensional}
+        lines={["BRASSY {and} GROWN OUT,", "{back to} ASH"]}
+        caption="One sitting" 
       />
 
       <Services />
@@ -28,8 +31,9 @@ export default function Home() {
       <SceneFullBleed
         id="motion"
         ground="olive"
+        photo={PHOTOS.oilSlickMelt}
         lines={["HAIR {only reads}", "{when it} MOVES"]}
-        caption="Silk press · in motion"
+        caption="Oil-slick melt · in daylight" 
       />
 
       <SceneStatement
@@ -41,8 +45,9 @@ export default function Home() {
       <SceneFullBleed
         id="booking"
         ground="rose"
+        photo={PHOTOS.plumHighlights}
         lines={["PICK {a} TIME.", "{it is} YOURS {immediately}"]}
-        caption="No deposit · payment in the chair"
+        caption="No deposit · payment in the chair" 
       />
     </>
   );
