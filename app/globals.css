@@ -69,7 +69,6 @@
     background-color: var(--cream);
     color: var(--ink);
     font-family: var(--face-ui);
-    overflow-x: clip;
   }
 
   ::selection {
@@ -217,7 +216,7 @@
   .grain::before {
     content: "";
     position: absolute;
-    inset: -50%;
+    inset: 0;
     z-index: 2;
     opacity: 0.34;
     pointer-events: none;
