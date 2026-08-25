@@ -24,11 +24,16 @@ function useFinePointer() {
 }
 
 /**
- * The menu. On a desktop the hovered row keeps the ink and its siblings drop
- * back, and a preview trails the cursor with a spring so it lags slightly
- * behind the hand rather than sticking to it.
+ * The menu. On a desktop the hovered row keeps the ink while its siblings drop
+ * back, and a preview trails the cursor on a spring so it lags slightly behind
+ * the hand rather than sticking to it.
  *
- * Touch never sees any of that: every row carries its own thumbnail, so nothing
+ * Which row is active is decided on pointermove alone, never on pointerenter.
+ * Browsers fire enter/over events when content scrolls underneath a stationary
+ * cursor, so an enter-driven version flickered between services and threw the
+ * fixed preview around the screen while the page scrolled.
+ *
+ * Touch never sees any of this: every row carries its own thumbnail, so nothing
  * here depends on hover existing.
  */
 export function Services() {
@@ -40,13 +45,19 @@ export function Services() {
   const previewX = useSpring(0, spring);
   const previewY = useSpring(0, spring);
 
-  const showPreview = fine && !reduce && active !== null;
+  const activeService = active === null ? null : SERVICES[active];
+  /* Nothing to preview when photography is off, so the preview never mounts. */
+  const previewPhoto = activeService?.photo;
 
-  /* Position from the event that opens the preview as well as from movement,
-     otherwise entering a row without moving first shows it parked at 0,0. */
-  const track = (event: React.PointerEvent) => {
+  const onPointerMove = (event: React.PointerEvent) => {
+    if (!fine) return;
+
     previewX.set(event.clientX + 28);
     previewY.set(event.clientY - 150);
+
+    const row = (event.target as HTMLElement | null)?.closest?.("[data-row]");
+    const index = row ? Number((row as HTMLElement).dataset.row) : Number.NaN;
+    setActive(Number.isNaN(index) ? null : index);
   };
 
   return (
@@ -54,7 +65,7 @@ export function Services() {
       id="services"
       className="bg-cream-deep px-gutter py-scene"
       onPointerLeave={() => setActive(null)}
-      onPointerMove={fine ? track : undefined}
+      onPointerMove={fine ? onPointerMove : undefined}
     >
       <h2 className="mx-auto max-w-[17ch] text-center font-display text-statement leading-[1.04] tracking-display">
         {["EVERY PRICE {here}", "{is a} STARTING POINT"].map((line, index) => (
@@ -77,11 +88,7 @@ export function Services() {
           <li key={service.slug}>
             <FadeUp delay={Math.min(index * 0.06, 0.3)}>
               <div
-                onPointerEnter={(event) => {
-                  if (!fine) return;
-                  track(event);
-                  setActive(index);
-                }}
+                data-row={index}
                 className={cn(
                   "flex items-baseline gap-5 py-[clamp(14px,2.2vh,26px)] transition-opacity duration-500 md:gap-10",
                   active !== null && active !== index
@@ -119,17 +126,19 @@ export function Services() {
         ))}
       </ul>
 
-      {fine && !reduce ? (
+      {fine && !reduce && previewPhoto ? (
         <motion.div
           aria-hidden
           className="pointer-events-none fixed top-0 left-0 z-70 w-[clamp(180px,15vw,232px)]"
           style={{ x: previewX, y: previewY }}
-          animate={{ opacity: showPreview ? 1 : 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         >
           <Backdrop
-            ground={SERVICES[active ?? 0].ground}
-            photo={SERVICES[active ?? 0].photo}
+            ground={activeService.ground}
+            photo={previewPhoto}
             sizes="232px"
             className="aspect-3/4 w-full"
           />
