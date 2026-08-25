@@ -23,6 +23,7 @@ import { Headline } from "@/components/type/Headline";
  */
 export function SceneTransform({
   id,
+  before,
   after,
   beforePhoto,
   afterPhoto,
@@ -30,7 +31,9 @@ export function SceneTransform({
   caption,
 }: {
   id?: string;
-  /** The single lit field both states dissolve into. */
+  /** Each state gets its own lit field, so the wipe still reads when a
+   *  photograph is absent. */
+  before: Ground;
   after: Ground;
   beforePhoto?: Photo;
   afterPhoto?: Photo;
@@ -63,8 +66,9 @@ export function SceneTransform({
       className="relative h-[260svh]"
     >
       <div className="sticky top-0 h-svh overflow-hidden">
-        {/* One lit field under both states, so the edges dissolve into colour
-            and the wipe runs through the solid middle where the work is. */}
+        {/* Each state is a lit field with its photograph dissolving into it.
+            The fields differ, so the wipe still reads with no photography at
+            all — it becomes a wipe between two colours. */}
         <Backdrop ground={after} className="absolute inset-0" />
         <PhotoPlate
           photo={afterPhoto}
@@ -78,6 +82,7 @@ export function SceneTransform({
           className="absolute inset-0"
           style={reduce ? { clipPath: "inset(0 100% 0 0)" } : { clipPath }}
         >
+          <Backdrop ground={before} className="absolute inset-0" />
           <PhotoPlate
             photo={beforePhoto}
             spread="wide"

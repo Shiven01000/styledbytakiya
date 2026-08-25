@@ -18,11 +18,20 @@ export type Photo = {
   interim?: boolean;
 };
 
-const work = (file: string, alt: string): Photo => ({
-  src: `/images/work/${file}`,
-  alt,
-  interim: true,
-});
+/**
+ * The single switch for photography across the whole site.
+ *
+ * Off, every slot falls back to its lit colour ground and the site runs on the
+ * palette alone. On, the same slots carry the photographs. Nothing else needs
+ * touching either way — the files stay in `public/images/work/` and the slot
+ * assignments below stay intact.
+ */
+export const PHOTOS_ENABLED = false;
+
+const work = (file: string, alt: string): Photo | undefined =>
+  PHOTOS_ENABLED
+    ? { src: `/images/work/${file}`, alt, interim: true }
+    : undefined;
 
 export const PHOTOS = {
   auburnWaves: work(
@@ -73,6 +82,6 @@ export const PHOTOS = {
     "platinum-crop.jpg",
     "Platinum white spiked crop",
   ),
-} satisfies Record<string, Photo>;
+} satisfies Record<string, Photo | undefined>;
 
 export type PhotoKey = keyof typeof PHOTOS;

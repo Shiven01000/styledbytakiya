@@ -6,7 +6,7 @@ import { PhotoPlate, type Ground } from "@/components/media/Backdrop";
 import { PHOTOS, type Photo } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
-const SLIDES: { ground: Ground; photo: Photo; caption: string }[] = [
+const SLIDES: { ground: Ground; photo?: Photo; caption: string }[] = [
   {
     ground: "amber",
     photo: PHOTOS.auburnWaves,
@@ -66,7 +66,7 @@ export function Hero() {
 
         return (
           <motion.div
-            key={slide.photo.src}
+            key={slide.ground}
             className="absolute inset-0"
             initial={false}
             animate={{ opacity: showing ? 1 : 0 }}
@@ -126,7 +126,7 @@ export function Hero() {
       <div className="absolute top-1/2 left-gutter z-3 flex -translate-y-1/2 flex-col gap-3">
         {SLIDES.map((slide, slideIndex) => (
           <button
-            key={slide.photo.src}
+            key={slide.ground}
             type="button"
             onClick={() => setIndex(slideIndex)}
             className="flex h-6 w-6 items-center justify-center"

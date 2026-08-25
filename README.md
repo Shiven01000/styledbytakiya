@@ -34,6 +34,12 @@ no tinted panels, no coloured buttons.
 
 ## Photography
 
+**Photography is currently off.** `PHOTOS_ENABLED` in `lib/images.ts` is the
+single switch: off, every slot falls back to its lit colour ground and the site
+runs on the palette alone; on, the same slots carry the photographs. The files
+stay in `public/images/work/` and the slot assignments stay intact either way,
+so it is a one-line change in both directions.
+
 Every image slot points at a key in `lib/images.ts` rather than a file path, so
 swapping an image is a one-line edit and no component changes.
 

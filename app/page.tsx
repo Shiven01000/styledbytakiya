@@ -18,6 +18,7 @@ export default function Home() {
       {/* The one pinned set piece: the transformation runs at scroll speed. */}
       <SceneTransform
         id="work"
+        before="slate"
         after="amber"
         beforePhoto={PHOTOS.brassyGrownOut}
         afterPhoto={PHOTOS.ashDimensional}
